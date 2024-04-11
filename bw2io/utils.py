@@ -90,7 +90,7 @@ class ExchangeLinker:
             field_value,
             case_insensitive=True,
             strip=True,
-            re_sub=re_sub,
+            exclude_special_characters=True
     ):
         if field_value is None:
             return None
@@ -100,7 +100,7 @@ class ExchangeLinker:
                 value = value.lower()
             if strip:
                 value = value.strip()
-            if re_sub is not None:
+            if re_sub is not None and exclude_special_characters:
                 value = re_sub.sub("", value)
             return value
 
@@ -116,7 +116,7 @@ class ExchangeLinker:
 
     @classmethod
     def activity_hash(
-            cls, act, fields=DEFAULT_FIELDS, case_insensitive=True, strip=True
+            cls, act, fields=DEFAULT_FIELDS, case_insensitive=True, strip=True, exclude_special_characters=True
     ):
         """Hash an activity dataset.
 
@@ -153,6 +153,7 @@ class ExchangeLinker:
                     ),
                     case_insensitive=case_insensitive,
                     strip=strip,
+                    exclude_special_characters=exclude_special_characters,
                 )
                 for field in fields or DEFAULT_FIELDS
             ]
