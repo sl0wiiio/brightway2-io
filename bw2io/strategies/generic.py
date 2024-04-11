@@ -270,7 +270,7 @@ def link_technosphere_by_activity_hash(db, external_db_name=None, fields=None):
     )
 
 
-def set_code_by_activity_hash(db, overwrite=False):
+def set_code_by_activity_hash(db, overwrite=False, case_sensitive=True, strip=True, exclude_special_characters=True):
     """
     Set the dataset code for each dataset in the given database using `activity_hash`.
 
@@ -280,6 +280,12 @@ def set_code_by_activity_hash(db, overwrite=False):
         The database to set the dataset codes in.
     overwrite : bool, optional
         Whether to overwrite existing codes. Default is False.
+    case_sensitive : bool, optional
+        Whether to assign codes based on case-sensitive or case-insensitive fields. Default is True.
+    strip : bool, optional
+        Whether to strip whitespaces of fields before assigning codes. Default is True.
+    exclude_special_characters : bool, optional
+        Whether to exclude special characters (e.g., commas or square brackets) of fields before assigning codes. Default is True.
 
     Returns
     -------
@@ -297,7 +303,7 @@ def set_code_by_activity_hash(db, overwrite=False):
     """
     for ds in db:
         if "code" not in ds or overwrite:
-            ds["code"] = activity_hash(ds)
+            ds["code"] = activity_hash(ds,  case_sensitive=case_sensitive, strip=strip, exclude_special_characters=exclude_special_characters)
     return db
 
 def tupleize_categories(db):
